@@ -2,3 +2,14 @@ services:
 #    starx_symfony_bug_tracker.example:
 #        class: Starx\SymfonyBugTrackerBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
+    s3_bug_tracker.service.issue:
+        class: Starx\SymfonyBugTrackerBundle\Services\IssueService
+        arguments: ["@doctrine.orm.entity_manager"]
+        calls:
+            - [setEnv, ["%kernel.environment%"]]
+    s3_bug_tracker.service:
+        class: Starx\SymfonyBugTrackerBundle\Services\BugTrackerService
+        arguments: ["@doctrine.orm.entity_manager"]
+        calls:
+            - [setRequestStack, ["@request_stack"]]
+            - [setIssueService, ["@s3_bug_tracker.service.issue"]]
