@@ -19,7 +19,15 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('starx_symfony_bug_tracker');
-
+        $rootNode
+            ->children()
+            ->arrayNode('exception')
+            ->children()
+            ->booleanNode('automatic_reporting')->defaultFalse()->end()
+            ->end()
+            ->end() // exception
+            ->end()
+        ;
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
