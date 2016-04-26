@@ -1,22 +1,23 @@
 <?php
 namespace Starx\SymfonyBugTrackerBundle\Services;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
-use Starx\BugTrackerBundle\Entity\Issue;
+use Starx\SymfonyBugTrackerBundle\Entity\Issue;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class BugTrackerService
 {
-    /** @var  EntityManager */
-    private $em;
+    /** @var  Registry */
+    private $doctrineRegistry;
     /** @var RequestStack */
     private $request_stack;
     /** @var IssueService */
     private $issueService;
 
 
-    public function __construct(EntityManager $em) {
-        $this->em = $em;
+    public function __construct(Registry $doctrineRegistry) {
+        $this->doctrineRegistry = $doctrineRegistry;
     }
 
     public function setRequestStack(RequestStack $stack) {

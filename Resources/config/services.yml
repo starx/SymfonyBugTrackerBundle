@@ -1,15 +1,23 @@
+parameters:
+    automatic_exception_reporting: false
 services:
 #    starx_symfony_bug_tracker.example:
 #        class: Starx\SymfonyBugTrackerBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
+    app.exception_listener:
+        class: Starx\SymfonyBugTrackerBundle\EventListener\ExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+        calls:
+            - [setIssueService, ["@s3_bug_tracker.service"]]
     s3_bug_tracker.service.issue:
         class: Starx\SymfonyBugTrackerBundle\Services\IssueService
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine"]
         calls:
             - [setEnv, ["%kernel.environment%"]]
     s3_bug_tracker.service:
         class: Starx\SymfonyBugTrackerBundle\Services\BugTrackerService
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine"]
         calls:
             - [setRequestStack, ["@request_stack"]]
             - [setIssueService, ["@s3_bug_tracker.service.issue"]]
