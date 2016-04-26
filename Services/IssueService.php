@@ -1,20 +1,26 @@
 <?php
 namespace Starx\SymfonyBugTrackerBundle\Services;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
-use Starx\BugTrackerBundle\Entity\Issue;
+use Doctrine\ORM\ORMException;
+use Starx\SymfonyBugTrackerBundle\Entity\Issue;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class IssueService
 {
+
+    /** @var  Registry */
+    private $doctrineRegistry;
     /** @var  EntityManager */
-    private $em;
+    private $entityManager;
     /** @var RequestStack */
     private $request_stack;
     private $env;
 
-    public function __construct(EntityManager $em) {
-        $this->em = $em;
+    public function __construct(Registry $doctrineRegistry) {
+        $this->doctrineRegistry = $doctrineRegistry;
+        $this->entityManager = $this->doctrineRegistry->getManager();
     }
 
     public function setRequestStack(RequestStack $stack) {
@@ -27,13 +33,20 @@ class IssueService
 
     public function reportIssue(Issue $entity) {
         try {
-            $this->em->persist($entity);
-            $this->em->flush();
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
             return true;
-        } catch(\Exception $e) {
-            throw $e;
-            return false;
+        } catch(ORMException $e) {
+            // reset entity manager
+            if (!$this->entityManager->isOpen()) {
+                $this->entityManager = $this->entityManager->create(
+                    $this->entityManager->getConnection(),
+                    $this->entityManager->getConfiguration()
+                );
+                return $this->reportIssue($entity);
+            }
         }
+        return false;
     }
 
 }
