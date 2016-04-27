@@ -18,14 +18,14 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('starx_symfony_bug_tracker');
+        $rootNode = $treeBuilder->root('bug_tracker');
         $rootNode
             ->children()
-            ->arrayNode('exception')
-            ->children()
-            ->booleanNode('automatic_reporting')->defaultFalse()->end()
-            ->end()
-            ->end() // exception
+                ->arrayNode('exception')
+                    ->children()
+                        ->booleanNode('automatic_reporting')->defaultFalse()->end()
+                    ->end()
+                ->end() // exception
             ->end()
         ;
         // Here you should define the parameters that are allowed to
