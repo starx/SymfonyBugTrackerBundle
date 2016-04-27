@@ -10,17 +10,32 @@ class ExceptionListener
 {
     /** @var BugTrackerService */
     protected $bugTrackerService;
+    protected $automatic_reporting = false;
 
-    public function setIssueService(BugTrackerService $service) {
-        $this->bugTrackerService = $service;
+
+
+    /**
+     * @param BugTrackerService $bugTrackerService
+     */
+    public function setBugTrackerService($bugTrackerService)
+    {
+        $this->bugTrackerService = $bugTrackerService;
+    }
+
+    /**
+     * @param boolean $automatic_reporting
+     */
+    public function setAutomaticReporting($automatic_reporting)
+    {
+        $this->automatic_reporting = $automatic_reporting;
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        // You get the exception object from the received event
-        $exception = $event->getException();
-        $this->bugTrackerService->reportException($exception);
-
-        return true;
+        if($this->automatic_reporting === true) {
+            // You get the exception object from the received event
+            $exception = $event->getException();
+            $this->bugTrackerService->reportException($exception);
+        }
     }
 }

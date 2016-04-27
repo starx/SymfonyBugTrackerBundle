@@ -1,5 +1,3 @@
-parameters:
-    automatic_exception_reporting: false
 services:
 #    starx_symfony_bug_tracker.example:
 #        class: Starx\SymfonyBugTrackerBundle\Example
@@ -9,7 +7,8 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
         calls:
-            - [setIssueService, ["@s3_bug_tracker.service"]]
+            - [setBugTrackerService, ["@s3_bug_tracker.service"]]
+            - [setAutomaticReporting, [%bug_tracker.exception.automatic_reporting%]]
     s3_bug_tracker.service.issue:
         class: Starx\SymfonyBugTrackerBundle\Services\IssueService
         arguments: ["@doctrine"]
