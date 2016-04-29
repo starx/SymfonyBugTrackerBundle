@@ -24,6 +24,11 @@ class StarxSymfonyBugTrackerExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('config.yml');
+        $container->setParameter('bug_tracker.exception.automatic_reporting', $config['exception']['automatic_reporting']);
+    }
+
+    public function getAlias()
+    {
+        return "bug_tracker";
     }
 }
