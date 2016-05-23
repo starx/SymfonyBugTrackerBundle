@@ -33,6 +33,7 @@ class IssueService
 
     public function reportIssue(Issue $entity) {
         try {
+            $this->entityManager->rollback();
             $this->entityManager->persist($entity);
             $this->entityManager->flush();
             return true;
