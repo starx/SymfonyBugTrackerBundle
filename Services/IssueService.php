@@ -33,7 +33,12 @@ class IssueService
 
     public function reportIssue(Issue $entity) {
         try {
-            $this->entityManager->rollback();
+            // Reset Entity Manager to clear previous
+            $this->entityManager = $this->entityManager->create(
+                $this->entityManager->getConnection(),
+                $this->entityManager->getConfiguration()
+            );
+            //
             $this->entityManager->persist($entity);
             $this->entityManager->flush();
             return true;
