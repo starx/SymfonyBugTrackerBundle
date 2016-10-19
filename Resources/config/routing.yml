@@ -1,0 +1,3 @@
+starx_symfony_bug_tracker_homepage:
+    path:     /
+    defaults: { _controller: StarxSymfonyBugTrackerBundle:Default:index }
