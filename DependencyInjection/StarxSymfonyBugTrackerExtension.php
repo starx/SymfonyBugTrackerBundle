@@ -27,7 +27,7 @@ class StarxSymfonyBugTrackerExtension extends Extension
         $container->setParameter('bug_tracker.exception.automatic_reporting', $config['exception']['automatic_reporting']);
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return "bug_tracker";
     }
