@@ -1,7 +1,14 @@
 {
     "name": "starx/symfony-bug-tracker",
     "description": "This bundle allows to track bugs in your application and automatically create issues with all the information required on your repository",
-    "keywords": ["symfony", "bug", "tracker", "automatic", "github", "issues"],
+    "keywords": [
+        "symfony",
+        "bug",
+        "tracker",
+        "automatic",
+        "github",
+        "issues"
+    ],
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -16,6 +23,16 @@
         "symfony/yaml": "~2.7|~3.0"
     },
     "autoload": {
-        "psr-4": { "Starx\\SymfonyBugTrackerBundle\\": "" }
+        "psr-4": {
+            "Starx\\SymfonyBugTrackerBundle\\": ""
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Starx\\SymfonyBugTrackerBundle\\Tests\\": "tests/"
+        }
     }
 }
